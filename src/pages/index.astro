@@ -1,17 +1,49 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.year - a.data.year,
+);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Antoine Pollet — Développeur freelance">
+  <section id="about" class="mb-20 max-w-2xl">
+    <p class="mb-3 font-mono text-sm text-neutral-500">Bonjour 👋</p>
+    <h1
+      class="mb-6 text-4xl font-bold tracking-tight md:text-5xl"
+    >
+      Je suis <span class="text-neutral-500">Antoine Pollet</span>, développeur
+      freelance.
+    </h1>
+    <p class="mb-8 text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+      Je conçois et développe des applications web et mobile, du prototype au
+      produit en production. Voici une sélection de projets sur lesquels j'ai
+      travaillé.
+    </p>
+    <SocialLinks />
+  </section>
+
+  <section id="projects">
+    <div class="mb-8 flex items-baseline justify-between">
+      <h2 class="text-2xl font-semibold tracking-tight">Projets</h2>
+      <span class="font-mono text-sm text-neutral-500">
+        {projects.length} {projects.length > 1 ? 'projets' : 'projet'}
+      </span>
+    </div>
+
+    {
+      projects.length === 0 ? (
+        <p class="text-neutral-500">Bientôt disponible.</p>
+      ) : (
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

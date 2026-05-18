@@ -1,0 +1,42 @@
+---
+interface Props {
+  links: {
+    website?: string;
+    appStore?: string;
+    playStore?: string;
+    github?: string;
+  };
+  size?: 'sm' | 'md';
+}
+
+const { links, size = 'md' } = Astro.props;
+
+const badges = [
+  { key: 'website', label: 'Site web', href: links.website },
+  { key: 'appStore', label: 'App Store', href: links.appStore },
+  { key: 'playStore', label: 'Play Store', href: links.playStore },
+  { key: 'github', label: 'GitHub', href: links.github },
+].filter((b) => b.href);
+
+const sizeClasses =
+  size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm';
+---
+
+{
+  badges.length > 0 && (
+    <ul class="flex flex-wrap gap-2">
+      {badges.map((badge) => (
+        <li>
+          <a
+            href={badge.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`inline-flex items-center rounded-full border border-neutral-300 ${sizeClasses} font-medium text-neutral-700 transition hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-100 dark:hover:text-neutral-100`}
+          >
+            {badge.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
