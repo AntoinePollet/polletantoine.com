@@ -4,7 +4,7 @@ description: "Lecteur de flux RSS qui analyse le biais politique de chaque artic
 year: 2026
 tags: ["Vue 3", "Cloudflare Workers", "D1", "Hono", "Claude IA", "Stripe", "TypeScript"]
 links:
-  website: "https://app.feedwise.polletantoine.com"
+  website: "https://feedwise.polletantoine.com"
   github: "https://github.com/AntoinePollet/feedwise"
 featured: true
 draft: false
