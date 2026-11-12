@@ -2,19 +2,20 @@
 const links = [
   { label: 'GitHub', href: 'https://github.com/polletantoine' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/antoine-pollet/' },
-  { label: 'Email', href: 'mailto:antoine.pollet@silex.legal' },
+  { label: 'Email', href: 'mailto:pollet.antoine.alexis@gmail.com' },
 ];
 ---
 
-<ul class="flex flex-wrap items-center gap-4">
+<ul class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
   {
-    links.map((link) => (
-      <li>
+    links.map((link, i) => (
+      <li class="flex items-center gap-5">
+        {i > 0 && <span class="text-line" aria-hidden="true">・</span>}
         <a
           href={link.href}
           target={link.href.startsWith('http') ? '_blank' : undefined}
           rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-          class="hover:text-neutral-900 hover:underline underline-offset-4 dark:hover:text-neutral-100"
+          class="underline decoration-line decoration-1 underline-offset-4 hover:text-shu hover:decoration-shu"
         >
           {link.label}
         </a>

@@ -1,6 +1,12 @@
 ---
 title: "Topspin"
+kanji: "卓"
+kanjiMeaning: "table"
 description: "Tableau de bord pour pongistes : courbe de progression, historique de classement, statistiques de matchs et calendrier des tournois."
+cover: "../../../assets/projects/topspin/cover.png"
+gallery:
+  - "../../../assets/projects/topspin/tournois.png"
+  - "../../../assets/projects/topspin/vision.png"
 year: 2026
 tags: ["Vue 3", "Vite SSG", "Tailwind CSS", "daisyUI", "Cloudflare Workers", "KV", "TypeScript"]
 links:

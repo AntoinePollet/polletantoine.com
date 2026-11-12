@@ -1,0 +1,17 @@
+---
+interface Props {
+  kanji: string;
+  label: string;
+  aside?: string;
+}
+const { kanji, label, aside } = Astro.props;
+---
+
+<div data-reveal class="relative mb-12 flex items-end justify-between gap-4 pb-4">
+  <span class="slash" aria-hidden="true"></span>
+  <h2 class="flex items-baseline gap-4">
+    <span class="brush font-serif text-4xl text-shu" aria-hidden="true">{kanji}</span>
+    <span class="font-serif text-2xl tracking-wide">{label}</span>
+  </h2>
+  {aside && <span class="text-xs tracking-widest text-muted">{aside}</span>}
+</div>

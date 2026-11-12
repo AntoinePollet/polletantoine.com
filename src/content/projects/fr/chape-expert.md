@@ -1,6 +1,11 @@
 ---
 title: "Chape Expert"
+kanji: "床"
+kanjiMeaning: "sol"
 description: "Site vitrine et générateur de devis IA pour une entreprise de chapes de béton en Île-de-France."
+cover: "../../../assets/projects/chape-expert/cover.png"
+gallery:
+  - "../../../assets/projects/chape-expert/devis.png"
 year: 2025
 tags: ["Vue 3", "Vite SSG", "Tailwind CSS", "Netlify Functions", "Resend", "PWA", "SEO"]
 links:

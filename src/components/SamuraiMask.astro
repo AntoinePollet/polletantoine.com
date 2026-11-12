@@ -1,0 +1,52 @@
+---
+// Line-art samurai helmet and face guard (kabuto + menpo) inside an ensō circle.
+// Each stroke is "inked" in sequence when the element is revealed.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+
+const strokes = [
+  // helmet dome, brim, side flaps
+  'M46 104C46 58 154 58 154 104',
+  'M32 106Q100 88 168 106',
+  'M46 104L26 128L50 131',
+  'M154 104L174 128L150 131',
+  // crest (kuwagata) and emblem
+  'M94 70C82 46 64 30 50 14',
+  'M106 70C118 46 136 30 150 14',
+  // brows
+  'M68 116L94 124',
+  'M132 116L106 124',
+  // face guard
+  'M58 138Q100 128 142 138L138 168Q100 206 62 168Z',
+  // nose
+  'M100 134L93 152L107 152',
+  // moustache with curled ends
+  'M74 162Q88 152 100 158Q112 152 126 162',
+  'M74 162q-9 2-11-7',
+  'M126 162q9 2 11-7',
+  // mouth and teeth
+  'M86 172L114 172',
+  'M93 172v5M100 172v5M107 172v5',
+  // throat plates (yodare-kake)
+  'M64 184Q100 204 136 184',
+  'M68 196Q100 216 132 196',
+];
+---
+
+<div class:list={['samurai-mask group/mask relative', className]} data-reveal aria-hidden="true">
+  <svg viewBox="0 0 200 230" class="h-full w-full overflow-visible">
+    <!-- ensō -->
+    <path
+      class="ink enso"
+      pathLength="1"
+      d="M160 46C196 82 198 150 158 190C118 228 50 224 22 178C-4 134 10 70 54 42C82 24 118 22 146 34"
+    ></path>
+    <circle class="emblem" cx="100" cy="76" r="6"></circle>
+    {strokes.map((d, i) => <path class="ink stroke" pathLength="1" d={d} style={`--i:${i}`} />)}
+    <!-- eyes: glow once the mask is drawn -->
+    <path class="eye" d="M72 128L92 133" />
+    <path class="eye" d="M128 128L108 133" />
+  </svg>
+</div>

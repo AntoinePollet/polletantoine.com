@@ -1,19 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n/ui';
+import SamuraiMask from '../components/SamuraiMask.astro';
 ---
 
-<BaseLayout title="Page introuvable — Antoine Pollet">
-  <div class="flex flex-col items-start gap-4 py-12">
-    <p class="font-mono text-sm text-neutral-500">404</p>
-    <h1 class="text-4xl font-bold tracking-tight">Page introuvable</h1>
-    <p class="text-neutral-600 dark:text-neutral-400">
-      La page que tu cherches n'existe pas ou a été déplacée.
-    </p>
-    <a
-      href="/"
-      class="mt-4 inline-flex items-center rounded-full border border-neutral-300 px-4 py-2 text-sm font-medium hover:border-neutral-900 dark:border-neutral-700 dark:hover:border-neutral-100"
-    >
-      Retour à l'accueil
-    </a>
+<BaseLayout lang="fr" title={`${t('fr', '404.title')} — Antoine Pollet`}>
+  <div class="grid items-center gap-12 py-12 md:grid-cols-[1fr_auto]">
+  <div class="flex flex-col items-start gap-4">
+    <p class="font-serif text-7xl text-shu" aria-hidden="true">迷子</p>
+    <p class="text-xs tracking-[0.3em] text-muted">404</p>
+    <h1 class="font-serif text-4xl tracking-wide">{t('fr', '404.title')}</h1>
+    <p class="text-ink-soft">{t('fr', '404.lead')}</p>
+    <p class="text-sm text-muted" lang="en">{t('en', '404.title')} — {t('en', '404.lead')}</p>
+    <div class="mt-4 flex gap-6 text-sm">
+      <a href="/" class="border-b border-ink pb-0.5 hover:border-shu hover:text-shu">{t('fr', '404.back')}</a>
+      <a href="/en/" lang="en" class="border-b border-ink pb-0.5 hover:border-shu hover:text-shu">{t('en', '404.back')}</a>
+    </div>
+  </div>
+  <SamuraiMask class="mx-auto h-64 w-56 md:h-80 md:w-72" />
   </div>
 </BaseLayout>

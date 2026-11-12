@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../ProjectCard.astro';
+import SocialLinks from '../SocialLinks.astro';
+import SectionTitle from '../SectionTitle.astro';
+import Hanko from '../Hanko.astro';
+import HeroScene from '../HeroScene.astro';
+import SamuraiMask from '../SamuraiMask.astro';
+import { t, type Lang } from '../../i18n/ui';
+import { getProjects } from '../../lib/projects';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const projects = await getProjects(lang);
+---
+
+<BaseLayout lang={lang} title={t(lang, 'meta.title')}>
+  <section id="about" class="mb-24 grid items-center gap-10 md:mb-32 md:grid-cols-[1fr_minmax(0,26rem)]">
+    <div class="max-w-2xl">
+      <p
+        data-reveal
+        class="mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-muted"
+      >
+        <span class="h-px w-10 bg-shu" aria-hidden="true"></span>
+        {t(lang, 'hero.kicker')}
+      </p>
+      <h1 class="font-serif text-6xl leading-[1.05] tracking-wide md:text-8xl">
+        <span data-reveal class="block" style="--delay: 120ms">Antoine</span>
+        <span data-reveal class="block" style="--delay: 240ms">Pollet</span>
+      </h1>
+      <p
+        data-reveal
+        style="--delay: 380ms"
+        class="mt-10 max-w-xl text-lg leading-relaxed text-ink-soft"
+      >
+        {t(lang, 'hero.lead')}
+      </p>
+      <div data-reveal style="--delay: 500ms" class="mt-10">
+        <SocialLinks />
+      </div>
+    </div>
+
+    <HeroScene class="h-72 md:h-[30rem]">
+      <div
+        data-reveal
+        style="--delay: 300ms"
+        class="absolute inset-y-0 right-0 hidden items-start gap-4 md:flex"
+        aria-hidden="true"
+      >
+        <span class="vertical text-xs tracking-[0.4em] text-muted">さくひんしゅう</span>
+        <span class="brush vertical font-serif text-7xl tracking-[0.25em] text-ink/90">作品集</span>
+      </div>
+      <div class="absolute bottom-2 right-0 z-20 hidden md:block">
+        <Hanko size="lg" stamp />
+      </div>
+    </HeroScene>
+  </section>
+
+  <section id="projects" class="scroll-mt-8">
+    <SectionTitle
+      kanji="作品"
+      label={t(lang, 'projects.title')}
+      aside={t(lang, 'projects.count')(projects.length)}
+    />
+    {
+      projects.length === 0 ? (
+        <p class="text-muted">{t(lang, 'projects.empty')}</p>
+      ) : (
+        <div class="grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-2">
+          {projects.map((project, index) => (
+            <ProjectCard project={project} index={index} lang={lang} />
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <section id="contact" class="mt-32 scroll-mt-8">
+    <SectionTitle kanji="連絡" label={t(lang, 'contact.title')} />
+    <div class="grid items-center gap-12 md:grid-cols-[1fr_auto]">
+    <div data-reveal>
+      <p class="mb-4 text-lg text-ink-soft">{t(lang, 'contact.lead')}</p>
+      <a
+        href="mailto:pollet.antoine.alexis@gmail.com"
+        class="break-all font-serif text-2xl underline decoration-shu decoration-1 underline-offset-8 transition hover:text-shu md:text-4xl"
+      >
+        pollet.antoine.alexis@gmail.com
+      </a>
+    </div>
+    <SamuraiMask class="mx-auto h-56 w-48 md:h-72 md:w-64" />
+    </div>
+  </section>
+</BaseLayout>

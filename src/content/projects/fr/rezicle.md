@@ -1,5 +1,7 @@
 ---
 title: "Rezicle"
+kanji: "音"
+kanjiMeaning: "son"
 description: "Site vitrine d'une association de recyclage acoustique : revalorisation de cabines insonorisées, traitement acoustique et panneaux écoresponsables."
 year: 2025
 tags: ["Nuxt 4", "Vue 3", "Tailwind CSS", "daisyUI", "TypeScript", "Netlify"]

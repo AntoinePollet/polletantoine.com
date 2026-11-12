@@ -1,0 +1,36 @@
+---
+// A handful of CSS-only sakura petals drifting across the page.
+// Positions are generated at build time with a seeded PRNG: no client JS.
+let seed = 7;
+const rand = () => {
+  seed = (seed * 16807) % 2147483647;
+  return (seed - 1) / 2147483646;
+};
+const between = (a: number, b: number) => a + rand() * (b - a);
+
+const petals = Array.from({ length: 12 }, (_, i) => ({
+  x: between(0, 100),
+  size: between(10, 18),
+  fall: between(14, 24),
+  delay: -between(0, 24), // negative delay: petals are already mid-fall on load
+  sway: between(3, 6),
+  drift: between(30, 90) * (rand() > 0.5 ? 1 : -1),
+  opacity: between(0.45, 0.85),
+  mobile: i < 6,
+}));
+---
+
+<div class="sakura-layer pointer-events-none fixed inset-0 z-40 overflow-hidden" aria-hidden="true">
+  {
+    petals.map((p) => (
+      <span
+        class:list={['petal', { 'max-sm:hidden': !p.mobile }]}
+        style={`--x:${p.x}vw;--size:${p.size}px;--fall:${p.fall}s;--delay:${p.delay}s;--sway:${p.sway}s;--drift:${p.drift}px;--o:${p.opacity}`}
+      >
+        <svg viewBox="0 0 20 20">
+          <path d="M10 1C15.5 4 17.5 10.5 12.2 18.5L10 16.4 7.8 18.5C2.5 10.5 4.5 4 10 1Z" />
+        </svg>
+      </span>
+    ))
+  }
+</div>

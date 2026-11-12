@@ -1,23 +1,48 @@
 ---
+import Hanko from './Hanko.astro';
+import { languages, localizePath, switchLangPath, t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const home = localizePath('/', lang);
 ---
 
-<header class="border-b border-neutral-200 dark:border-neutral-800">
-  <div class="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
-    <a
-      href="/"
-      class="font-mono text-sm tracking-tight hover:text-neutral-500 dark:hover:text-neutral-400"
-    >
-      polletantoine.com
+<header class="border-b border-line">
+  <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-5">
+    <a href={home} class="group flex items-center gap-3 font-serif text-base tracking-wide hover:text-shu">
+      <span class="inline-flex transition duration-300 ease-out group-hover:rotate-12 group-hover:scale-110">
+        <Hanko />
+      </span>
+      <span class="hidden sm:inline">Antoine Pollet</span>
     </a>
-    <nav class="flex items-center gap-6 text-sm">
-      <a href="/#projects" class="hover:underline underline-offset-4">Projets</a>
-      <a href="/#about" class="hover:underline underline-offset-4">À propos</a>
-      <a
-        href="mailto:antoine.pollet@silex.legal"
-        class="hover:underline underline-offset-4"
-      >
-        Contact
-      </a>
+    <nav class="flex items-center gap-5 text-sm sm:gap-7">
+      <a href={`${home}#projects`} class="nav-link hover:text-shu">{t(lang, 'nav.projects')}</a>
+      <a href={`${home}#about`} class="nav-link hidden hover:text-shu sm:inline">{t(lang, 'nav.about')}</a>
+      <a href={`${home}#contact`} class="nav-link hover:text-shu">{t(lang, 'nav.contact')}</a>
+      <span class="h-4 w-px bg-line" aria-hidden="true"></span>
+      <ul class="flex items-center gap-2 text-xs tracking-widest" aria-label={t(lang, 'nav.lang')}>
+        {
+          (Object.keys(languages) as Lang[]).map((l) => (
+            <li>
+              <a
+                href={switchLangPath(Astro.url.pathname, l)}
+                hreflang={l}
+                lang={l}
+                aria-current={l === lang ? 'true' : undefined}
+                class={
+                  l === lang
+                    ? 'text-shu underline decoration-1 underline-offset-4'
+                    : 'text-muted hover:text-ink'
+                }
+              >
+                {languages[l]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </nav>
   </div>
 </header>

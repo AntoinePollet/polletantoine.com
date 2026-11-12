@@ -2,54 +2,89 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SakuraLayer from '../components/SakuraLayer.astro';
+import { languages, switchLangPath, t, type Lang } from '../i18n/ui';
 
 interface Props {
+  lang: Lang;
   title: string;
   description?: string;
   image?: string;
 }
 
-const {
-  title,
-  description = 'Antoine Pollet — développeur freelance. Portfolio de projets web et mobile.',
-  image = '/og-image.png',
-} = Astro.props;
+const { lang, title, description = t(lang, 'meta.description'), image = '/og-image.png' } =
+  Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site).toString();
+const alternates = (Object.keys(languages) as Lang[]).map((l) => ({
+  lang: l,
+  href: new URL(switchLangPath(Astro.url.pathname, l), Astro.site).toString(),
+}));
 ---
 
 <!doctype html>
-<html lang="fr" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+    />
 
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body
-    class="min-h-screen bg-neutral-50 text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100"
-  >
-    <Header />
-    <main class="mx-auto w-full max-w-5xl px-6 py-12 md:py-20">
+  <body class="min-h-screen antialiased">
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <SakuraLayer />
+    <Header lang={lang} />
+    <main class="mx-auto w-full max-w-6xl px-6 py-14 md:py-24">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
+
+    <script>
+      // Reveal [data-reveal] elements as they enter the viewport.
+      const items = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        items.forEach((el) => io.observe(el));
+      } else {
+        items.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
   </body>
 </html>

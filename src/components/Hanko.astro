@@ -1,0 +1,24 @@
+---
+// Red name seal (判子) — "ポレ" for Pollet.
+interface Props {
+  size?: 'sm' | 'lg';
+  /** Play the "stamped" entrance animation */
+  stamp?: boolean;
+}
+const { size = 'sm', stamp = false } = Astro.props;
+const sizes = {
+  sm: 'h-8 w-8 text-[0.7rem]',
+  lg: 'h-20 w-20 text-2xl',
+};
+---
+
+<span
+  aria-hidden="true"
+  class:list={[
+    'vertical inline-flex shrink-0 -rotate-3 items-center justify-center rounded-[3px] bg-seal font-serif font-bold leading-none tracking-[0.15em] text-seal-ink shadow-[inset_0_0_0_2px_var(--seal),inset_0_0_0_3px_var(--seal-ink)]',
+    sizes[size],
+    { stamp },
+  ]}
+>
+  ポレ
+</span>

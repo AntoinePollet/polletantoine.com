@@ -1,55 +1,43 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import PlatformBadges from './PlatformBadges.astro';
+import ProjectVisual from './ProjectVisual.astro';
+import { kanjiNumerals, localizePath, t, type Lang } from '../i18n/ui';
+import { projectSlug, type Project } from '../lib/projects';
 
 interface Props {
-  project: CollectionEntry<'projects'>;
+  project: Project;
+  index: number;
+  lang: Lang;
 }
 
-const { project } = Astro.props;
-const { title, description, cover, year, tags, links } = project.data;
+const { project, index, lang } = Astro.props;
+const { title, description, cover, kanji, year, tags } = project.data;
+const href = localizePath(`/projects/${projectSlug(project)}/`, lang);
 ---
 
-<article
-  class="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:border-neutral-900 hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-100"
->
-  <a href={`/projects/${project.id}/`} class="flex h-full flex-col">
+<article class="group" data-reveal style={`--delay: ${(index % 2) * 140}ms`}>
+  <a href={href} class="block">
+    <ProjectVisual
+      image={cover}
+      kanji={kanji}
+      alt={title}
+      label={t(lang, 'placeholder.label')}
+      width={900}
+    />
+    <div class="mt-5 flex items-center gap-3 text-xs tracking-widest text-muted">
+      <span class="font-serif text-sm text-shu">{kanjiNumerals[index] ?? index + 1}</span>
+      <span
+        class="h-px w-6 bg-line transition-all duration-500 group-hover:w-12 group-hover:bg-shu"
+        aria-hidden="true"></span>
+      <span>{year}</span>
+    </div>
+    <h3 class="mt-2 font-serif text-2xl tracking-wide transition group-hover:text-shu">
+      {title}
+    </h3>
+    <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-soft">{description}</p>
     {
-      cover && (
-        <div class="aspect-video overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-          <Image
-            src={cover}
-            alt={title}
-            width={800}
-            height={450}
-            class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-          />
-        </div>
+      tags.length > 0 && (
+        <p class="mt-3 text-xs text-muted">{tags.slice(0, 4).join(' ・ ')}</p>
       )
     }
-    <div class="flex flex-1 flex-col gap-3 p-6">
-      <div class="flex items-baseline justify-between gap-2">
-        <h3 class="text-lg font-semibold tracking-tight">{title}</h3>
-        <span class="font-mono text-xs text-neutral-500">{year}</span>
-      </div>
-      <p class="line-clamp-3 text-sm text-neutral-600 dark:text-neutral-400">
-        {description}
-      </p>
-      {
-        tags.length > 0 && (
-          <ul class="mt-auto flex flex-wrap gap-1.5 pt-2">
-            {tags.map((tag) => (
-              <li class="rounded-md bg-neutral-100 px-2 py-0.5 font-mono text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-                {tag}
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </div>
   </a>
-  <div class="border-t border-neutral-200 px-6 py-3 dark:border-neutral-800">
-    <PlatformBadges links={links} size="sm" />
-  </div>
 </article>

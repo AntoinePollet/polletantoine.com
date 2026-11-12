@@ -1,0 +1,27 @@
+---
+// Container for the three.js katana scene. Children are layered behind the canvas.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <slot />
+  <canvas
+    data-hero-canvas
+    aria-hidden="true"
+    class="hero-canvas pointer-events-none absolute inset-0 z-10 h-full w-full"></canvas>
+</div>
+
+<script>
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+  if (canvas) {
+    const start = () =>
+      import('../lib/heroScene')
+        .then(({ initHeroScene }) => initHeroScene(canvas))
+        .catch(() => {});
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1200 });
+    else setTimeout(start, 300);
+  }
+</script>
