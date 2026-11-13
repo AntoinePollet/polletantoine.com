@@ -16,13 +16,15 @@ const href = localizePath(`/projects/${projectSlug(project)}/`, lang);
 
 <article class="group" data-reveal style={`--delay: ${(index % 2) * 140}ms`}>
   <a href={href} class="block">
-    <ProjectVisual
-      image={cover}
-      kanji={kanji}
-      alt={title}
-      label={t(lang, 'placeholder.label')}
-      width={900}
-    />
+    <div data-tilt class="tilt rounded-2xl">
+      <ProjectVisual
+        image={cover}
+        kanji={kanji}
+        alt={title}
+        label={t(lang, 'placeholder.label')}
+        width={900}
+      />
+    </div>
     <div class="mt-5 flex items-center gap-3 text-xs tracking-widest text-muted">
       <span class="font-serif text-sm text-shu">{kanjiNumerals[index] ?? index + 1}</span>
       <span
@@ -41,3 +43,23 @@ const href = localizePath(`/projects/${projectSlug(project)}/`, lang);
     }
   </a>
 </article>
+
+<script>
+  // Image tilts toward the cursor — home grid only, mouse pointers only, motion allowed.
+  const cards = document.querySelectorAll<HTMLElement>('[data-tilt]');
+  const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (cards.length && canHover && !reduced) {
+    import('vanilla-tilt').then(({ default: VanillaTilt }) =>
+      VanillaTilt.init(Array.from(cards), {
+        max: 8,
+        speed: 600,
+        perspective: 1100,
+        scale: 1.02,
+        glare: true,
+        'max-glare': 0.18,
+        gyroscope: false,
+      }),
+    );
+  }
+</script>

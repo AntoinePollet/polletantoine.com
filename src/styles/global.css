@@ -335,3 +335,12 @@ body {
   vertical-align: 0.12em;
   background: var(--shu);
 }
+
+/* vanilla-tilt: keep the glare inside the rounded frame */
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt .js-tilt-glare {
+  border-radius: 1rem;
+}

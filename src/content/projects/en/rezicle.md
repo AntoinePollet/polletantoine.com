@@ -3,6 +3,10 @@ title: "Rezicle"
 kanji: "音"
 kanjiMeaning: "sound"
 description: "Showcase website for an acoustic recycling non-profit: refurbished soundproof booths, acoustic treatment and eco-friendly panels."
+cover: "../../../assets/projects/rezicle/cover.png"
+gallery:
+  - "../../../assets/projects/rezicle/services.png"
+  - "../../../assets/projects/rezicle/contact.png"
 year: 2025
 tags: ["Nuxt 4", "Vue 3", "Tailwind CSS", "daisyUI", "TypeScript", "Netlify"]
 links:
